@@ -35,9 +35,18 @@ const Main = () => {
     dispatch(actions.file.clear())
   }, [])
 
+  const saveVideo = useCallback((start, end) => {
+    console.debug('Сохранение видео', {
+      filePath,
+      start,
+      end,
+    })
+    dispatch(actions.file.save(start, end))
+  }, [])
+
   if (filePath) {
     return (
-      <Editor filePath={filePath} onClose={closeEditor} />
+      <Editor filePath={filePath} onClose={closeEditor} onSave={saveVideo} />
     )
   }
 

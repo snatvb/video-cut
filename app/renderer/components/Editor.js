@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -37,16 +37,36 @@ const TimePanel = styled.div`
   margin: 5px 10px;
 `
 
-const Editor = ({ filePath, onClose }) => {
+const Editor = ({ filePath, onClose, onSave }) => {
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
   const close = useCallback(() => onClose(), [onClose])
+  const handleChangeStartTime = useCallback((event) => setStartTime(event.target.value), [])
+  const handleChangeEndTime = useCallback((event) => setEndTime(event.target.value), [])
+
+  const save = useCallback(() => {
+    const start = parseInt(startTime, 10)
+    const end = parseInt(endTime, 10)
+    if (Number.isNaN(start) || start < 0) {
+      console.error('Число начало видео либо NaN, либо меньше 0', { start, end })
+      return
+    }
+
+    if (Number.isNaN(end) || end <= start) {
+      console.error('Число окончания видео либо NaN, либо меньше или равно началу', { start, end })
+      return
+    }
+
+    onSave(start, end)
+  }, [startTime, endTime, onSave])
 
   return (
     <Container>
       <Video src={`file:///${filePath}`} controls />
       <TimeRegion>
-        <TimePanel><Input placeholder="Start time" /></TimePanel>
-        <TimePanel><Input placeholder="End time" /></TimePanel>
-        <TimePanel><Button>Save</Button></TimePanel>
+        <TimePanel><Input placeholder="Start time" onChange={handleChangeStartTime} /></TimePanel>
+        <TimePanel><Input placeholder="End time" onChange={handleChangeEndTime} /></TimePanel>
+        <TimePanel><Button onClick={save}>Save</Button></TimePanel>
       </TimeRegion>
       <CloseButtonRegion>
         <Button onClick={close}>Close</Button>
