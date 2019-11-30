@@ -7,6 +7,13 @@ const Button = styled.button`
   font-size: 18px;
   padding: 6px 12px;
   border-radius: 3px;
+  -webkit-app-region: no-drag;
+  outline: none;
+  cursor: pointer;
+
+  &:hover {
+  background-color: #494949;
+  }
 `
 
 export default Button
