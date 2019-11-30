@@ -31,9 +31,13 @@ const Main = () => {
     helpers.dom.selectFiles(([file]) => dispatch(actions.file.add(file)), { accept: '.mp4,.avi' })
   }, [])
 
+  const closeEditor = useCallback(() => {
+    dispatch(actions.file.clear())
+  }, [])
+
   if (filePath) {
     return (
-      <Editor filePath={filePath} />
+      <Editor filePath={filePath} onClose={closeEditor} />
     )
   }
 

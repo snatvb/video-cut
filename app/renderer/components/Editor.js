@@ -38,7 +38,7 @@ const TimePanel = styled.div`
 `
 
 const Editor = ({ filePath, onClose }) => {
-  const close = useCallback(() => onClose && onClose(), [onClose])
+  const close = useCallback(() => onClose(), [onClose])
 
   return (
     <Container>

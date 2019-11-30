@@ -13,6 +13,13 @@ export default handleActions(
         state,
       )
     },
+    [actions.clear]: (state) => {
+      return R.assoc(
+        'path',
+        defaultState.path,
+        state,
+      )
+    },
   },
   defaultState,
 );
