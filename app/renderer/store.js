@@ -1,11 +1,11 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import { connectRouter, routerMiddleware, push } from 'connected-react-router'
-import persistState from 'redux-localstorage'
 import thunk from 'redux-thunk'
+import persistState from 'redux-localstorage'
 
 import user from './reducers/user'
 import userActions from './actions/user'
-import files from './reducers/files'
+import file from './reducers/file'
 import fileActions from './actions/file'
 
 export default function configureStore(initialState, routerHistory) {
@@ -20,7 +20,7 @@ export default function configureStore(initialState, routerHistory) {
   const reducers = {
     router: connectRouter(routerHistory),
     user,
-    files,
+    file,
   }
 
   const middlewares = [thunk, router]

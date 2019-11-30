@@ -1,4 +1,4 @@
-const selectFiles = (callback, multiple = false, accept = undefined) => {
+const selectFiles = (callback, { multiple = false, accept = undefined } = {}) => {
   const input = document.createElement('input')
   input.type = 'file'
   input.style.display = 'none'

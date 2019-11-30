@@ -1,11 +1,12 @@
 import styled from 'styled-components'
-import React, { useState, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
-import { push } from 'connected-react-router'
-import { bindActionCreators } from 'redux'
+import React, { useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import * as actions from '../actions'
-import Button from '../components/Button'
 import * as helpers from '../helpers'
+import * as selectors from '../selectors'
+import Button from '../components/Button'
+import Editor from '../components/Editor'
 
 const Container = styled.div`
   display: flex;
@@ -24,11 +25,17 @@ const H2 = styled.h2`
 
 const Main = () => {
   const dispatch = useDispatch()
-  const fileActions = bindActionCreators(actions.file, dispatch)
+  const filePath = useSelector(selectors.file.getPath)
 
   const openFile = useCallback(() => {
-    helpers.dom.selectFiles(([file]) => fileActions.add(file))
+    helpers.dom.selectFiles(([file]) => dispatch(actions.file.add(file)), { accept: '.mp4,.avi' })
   }, [])
+
+  if (filePath) {
+    return (
+      <Editor filePath={filePath} />
+    )
+  }
 
   return (
     <Container>
