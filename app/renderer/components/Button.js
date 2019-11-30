@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const Application = styled.button`
+const Button = styled.button`
   background-color: #393939;
   border: none;
   color: rgb(230, 230, 230);
@@ -9,4 +9,4 @@ const Application = styled.button`
   border-radius: 3px;
 `
 
-export default Application
+export default Button
