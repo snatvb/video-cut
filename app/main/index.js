@@ -2,6 +2,8 @@ import path from 'path'
 import { app, crashReporter, BrowserWindow, Menu } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
 
+import api from './api'
+
 ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffmpeg.exe'))
 ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffprobe.exe'))
 ffmpeg.setFlvtoolPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffplay.exe'))
@@ -55,6 +57,7 @@ app.on('ready', async () => {
   if (isDevelopment) {
     await installExtensions()
   }
+  api.start()
 
   mainWindow = new BrowserWindow({
     width: 1000,
