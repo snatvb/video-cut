@@ -12,6 +12,8 @@
   "dependencies": {
     "@babel/register": "^7.6.2",
     "connected-react-router": "^6.5.2",
+    "ffmpeg": "^0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "history": "^4.10.1",
     "prop-types": "^15.7.2",
     "react": "^16.10.0",

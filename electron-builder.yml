@@ -1,6 +1,6 @@
-appId: com.example.app
-copyright: Example co
-productName: MyApp
+appId: com.video-cut.app
+copyright: snatvb
+productName: Video Cut
 
 asar: true
 
@@ -13,6 +13,7 @@ files:
   - init.js
   - build/
   - node_modules/
+  - assets/
 
 dmg:
   contents:
