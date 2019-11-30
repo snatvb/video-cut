@@ -7,3 +7,11 @@ function copyHtml() {
 copyHtml.displayName = 'copy-html';
 
 exports.copyHtml = copyHtml;
+
+function copyCss() {
+  return src('app/renderer/styles/**').pipe(dest('build/renderer/styles/'));
+}
+
+copyCss.displayName = 'copy-css';
+
+exports.copyCss = copyCss;

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { push } from 'connected-react-router';
-import { bindActionCreators } from 'redux';
-import userActions from '../actions/user';
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
+import { bindActionCreators } from 'redux'
+import userActions from '../actions/user'
+import Button from '../components/Button'
 
 
 const Login = () => {
@@ -27,7 +28,7 @@ const Login = () => {
     <div>
       <h2>Login</h2>
       <input onChange={handleChangeNickname} type="text" value={username} />
-      <button onClick={handleLogin}>Log In</button>
+      <Button onClick={handleLogin}>Log In</Button>
     </div>
   )
 }

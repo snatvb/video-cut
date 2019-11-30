@@ -23,7 +23,8 @@
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-localstorage": "^0.4.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^4.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

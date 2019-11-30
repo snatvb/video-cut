@@ -19,14 +19,23 @@ function watchHtml() {
   );
 }
 
+function watchCss() {
+  return watch(
+    ['app/renderer/styles/**'],
+    series(assets.copyCss, hotreload.inject, hotreload.reload),
+  );
+}
+
 watchMainScripts.displayName = 'watch-main-scripts';
 watchRendererScripts.displayName = 'watch-renderer-scripts';
 watchHtml.displayName = 'watch-html';
+watchCss.displayName = 'watch-css';
 
 exports.start = series(
   assets.copyHtml,
+  assets.copyCss,
   scripts.developBuild,
   hotreload.start,
   electron.start,
-  parallel(watchMainScripts, watchRendererScripts, watchHtml),
+  parallel(watchMainScripts, watchRendererScripts, watchHtml, watchCss),
 );
