@@ -27,6 +27,7 @@ async function cut(event, { filePath, time }) {
   console.log('Path to save', pathToSave)
   if (pathToSave.cancelled) {
     console.log('Save was cancelled')
+    event.sender.send('video.cut.cancelled')
     return
   }
 

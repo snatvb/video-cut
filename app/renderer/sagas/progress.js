@@ -23,8 +23,13 @@ function makeChannel() {
         type: 'SUCCESS',
       }) }
 
+      const handleCancelledCut = () => { emit({
+        type: 'CANCELLED_CUT',
+      }) }
+
       ipcRenderer.on('video.progress', handleProgress)
       ipcRenderer.on('video.progress.error', handleError)
+      ipcRenderer.on('video.cut.cancelled', handleCancelledCut)
       ipcRenderer.on('video.progress.success', handleSuccess)
 
       return () => {
@@ -55,6 +60,10 @@ function* handleSuccess() {
   yield put(actions.progress.merge(defaultState))
 }
 
+function* handleCancelledCut() {
+  yield put(actions.progress.merge(defaultState))
+}
+
 function* subscribe() {
   const channel = yield call(makeChannel)
   while (true) {
@@ -70,6 +79,10 @@ function* subscribe() {
 
       case 'SUCCESS':
         yield call(handleSuccess, action)
+        break
+
+      case 'CANCELLED_CUT':
+        yield call(handleCancelledCut, action)
         break
 
       default:
