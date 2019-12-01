@@ -7,18 +7,6 @@ import api from './api'
 ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffmpeg.exe'))
 ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffprobe.exe'))
 ffmpeg.setFlvtoolPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffplay.exe'))
-// ffmpeg('R:/test.mp4')
-// .setStartTime(0)
-// .duration(4)
-// .on('end', function(err) {
-//   if(!err) {
-//     console.log('conversion Done')
-//   }
-// })
-// .on('error', function(err){
-//   console.log('error: ', err)
-// })
-// .save('R:/output_test.mp4')
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 

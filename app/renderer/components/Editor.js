@@ -38,8 +38,8 @@ const TimePanel = styled.div`
 `
 
 const Editor = ({ filePath, onClose, onSave }) => {
-  const [startTime, setStartTime] = useState('1')
-  const [endTime, setEndTime] = useState('5')
+  const [startTime, setStartTime] = useState('')
+  const [endTime, setEndTime] = useState('')
   const close = useCallback(() => onClose(), [onClose])
   const handleChangeStartTime = useCallback((event) => setStartTime(event.target.value), [])
   const handleChangeEndTime = useCallback((event) => setEndTime(event.target.value), [])

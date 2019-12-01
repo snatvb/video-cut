@@ -2,7 +2,7 @@ appId: com.video-cut.app
 copyright: snatvb
 productName: Video Cut
 
-asar: true
+asar: false
 
 directories:
   buildResources: dist-assets/
