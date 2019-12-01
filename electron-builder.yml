@@ -27,7 +27,7 @@ dmg:
 
 mac:
   target: dmg
-  category: public.app-category.tools
+  category: video.cut.tools
 
 win:
   target: nsis
