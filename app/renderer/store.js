@@ -9,11 +9,14 @@ import user from './reducers/user'
 import userActions from './actions/user'
 import file from './reducers/file'
 import fileActions from './actions/file'
+import progress from './reducers/progress'
+import progressActions from './actions/progress'
 
 export default function configureStore(initialState, routerHistory) {
   const router = routerMiddleware(routerHistory)
 
   const actionCreators = {
+    ...progressActions,
     ...userActions,
     ...fileActions,
     push,
@@ -21,6 +24,7 @@ export default function configureStore(initialState, routerHistory) {
 
   const reducers = {
     router: connectRouter(routerHistory),
+    progress,
     user,
     file,
   }
