@@ -57,5 +57,5 @@ function registerListeners() {
 
 export function initialize() {
   registerListeners()
-  console.log('Cut initialized')
+  console.log('[API] Cut initialized')
 }

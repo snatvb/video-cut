@@ -58,7 +58,6 @@ const Bar = styled.div`
 
 const ProgressBar = () => {
   const progressState = useSelector(selectors.progress.get)
-  console.log('progressState', progressState)
 
   return (
     <Container>

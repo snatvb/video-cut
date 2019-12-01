@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import persistState from 'redux-localstorage'
 import createSagaMiddleware from 'redux-saga'
 
+import middlewares from './middlewares'
 import * as sagas from './sagas'
 import user from './reducers/user'
 import userActions from './actions/user'
@@ -30,7 +31,7 @@ export default function configureStore(initialState, routerHistory) {
   }
 
   const sagaMiddleware = createSagaMiddleware()
-  const middlewares = [thunk, router, sagaMiddleware]
+  const middlewaresToApply = [thunk, router, ...middlewares, sagaMiddleware]
 
   const composeEnhancers = (() => {
     const compose_ = window && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -40,7 +41,7 @@ export default function configureStore(initialState, routerHistory) {
     return compose
   })()
 
-  const enhancer = composeEnhancers(applyMiddleware(...middlewares), persistState())
+  const enhancer = composeEnhancers(applyMiddleware(...middlewaresToApply), persistState())
   const rootReducer = combineReducers(reducers)
   const store = createStore(rootReducer, initialState, enhancer)
   sagaMiddleware.run(sagas.initialize)
