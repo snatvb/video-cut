@@ -38,8 +38,8 @@ const TimePanel = styled.div`
 `
 
 const Editor = ({ filePath, onClose, onSave }) => {
-  const [startTime, setStartTime] = useState('')
-  const [endTime, setEndTime] = useState('')
+  const [startTime, setStartTime] = useState('1')
+  const [endTime, setEndTime] = useState('5')
   const close = useCallback(() => onClose(), [onClose])
   const handleChangeStartTime = useCallback((event) => setStartTime(event.target.value), [])
   const handleChangeEndTime = useCallback((event) => setEndTime(event.target.value), [])
@@ -64,8 +64,8 @@ const Editor = ({ filePath, onClose, onSave }) => {
     <Container>
       <Video src={`file:///${filePath}`} controls />
       <TimeRegion>
-        <TimePanel><Input placeholder="Start time" onChange={handleChangeStartTime} /></TimePanel>
-        <TimePanel><Input placeholder="End time" onChange={handleChangeEndTime} /></TimePanel>
+        <TimePanel><Input placeholder="Start time" onChange={handleChangeStartTime} value={startTime}/></TimePanel>
+        <TimePanel><Input placeholder="End time" onChange={handleChangeEndTime} value={endTime}/></TimePanel>
         <TimePanel><Button onClick={save}>Save</Button></TimePanel>
       </TimeRegion>
       <CloseButtonRegion>
