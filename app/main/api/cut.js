@@ -35,11 +35,18 @@ async function cut(event, { filePath, time }) {
   .duration(time.end)
   .on('end', function(error) {
     if(!error) {
-      console.log('conversion Done')
+      console.log('Save success')
+      event.sender.send('video.progress.success', { success: true })
+    } else {
+      event.sender.send('video.progress.error', { error })
     }
   })
-  .on('error', function(error){
-    console.log('error: ', error)
+  .on('error', function(error) {
+    console.log('Error: ', error)
+    event.sender.send('video.progress.error', { error })
+  })
+  .on('progress', function(progress) {
+    event.sender.send('video.progress', { percent: progress.percent })
   })
   .save(path.normalize(pathToSave.filePath))
 }

@@ -58,14 +58,13 @@ const Bar = styled.div`
 
 const ProgressBar = () => {
   const progressState = useSelector(selectors.progress.get)
-  const [success, setSuccess] = useState(false)
-  console.log('success', success)
+  console.log('progressState', progressState)
 
   return (
-    <Container onClick={() => { console.log('asd'); setSuccess(!success) }}>
+    <Container>
       <Text show={progressState.success} theme="success">Success</Text>
-      <Text show={Boolean(progressState.error)} theme="error">{progressState.error}</Text>
-      <Bar show={progressState.percents > 0} style={{ width: `${progressState.percents}%` }} />
+      <Text show={!progressState.success && Boolean(progressState.error)} theme="error">{progressState.error}</Text>
+      <Bar show={progressState.percent > 0 && !progressState.success} style={{ width: `${progressState.percent}%` }} />
     </Container>
   )
 }

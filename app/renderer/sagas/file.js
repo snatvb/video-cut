@@ -17,7 +17,7 @@ function* save() {
 }
 
 export function* initialize() {
-  console.debug('File sagas initialized')
+  console.debug('File sagas initialize')
   yield all([
     call(save),
   ])
