@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -13,9 +13,9 @@ const Container = styled.div`
 `
 
 const Video = styled.video`
-  max-width: 100%;
-  max-height: 100%;
   -webkit-app-region: no-drag;
+  max-height: 100%;
+  max-width: 100%;
 `
 
 const CloseButtonRegion = styled.div`
@@ -35,11 +35,16 @@ const TimeRegion = styled.div`
 const TimePanel = styled.div`
   display: flex;
   margin: 5px 10px;
+
+  ${Button} {
+    margin-left: 5px;
+  }
 `
 
 const Editor = ({ filePath, onClose, onSave }) => {
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
+  const videoRef = useRef(null)
   const close = useCallback(() => onClose(), [onClose])
   const handleChangeStartTime = useCallback((event) => setStartTime(event.target.value), [])
   const handleChangeEndTime = useCallback((event) => setEndTime(event.target.value), [])
@@ -60,12 +65,26 @@ const Editor = ({ filePath, onClose, onSave }) => {
     onSave(start, end)
   }, [startTime, endTime, onSave])
 
+  const setCurrentTimeStart = useCallback(() => {
+    setStartTime(Math.round(videoRef.current.currentTime))
+  }, [videoRef])
+
+  const setCurrentTimeEnd = useCallback(() => {
+    setEndTime(Math.round(videoRef.current.currentTime))
+  }, [videoRef])
+
   return (
     <Container>
-      <Video src={`file:///${filePath}`} controls />
+      <Video ref={videoRef} src={`file:///${filePath}`} controls />
       <TimeRegion>
-        <TimePanel><Input placeholder="Start time" onChange={handleChangeStartTime} value={startTime}/></TimePanel>
-        <TimePanel><Input placeholder="End time" onChange={handleChangeEndTime} value={endTime}/></TimePanel>
+        <TimePanel>
+          <Input placeholder="Start time" onChange={handleChangeStartTime} value={startTime}/>
+          <Button onClick={setCurrentTimeStart} size="small">Current Time</Button>
+        </TimePanel>
+        <TimePanel>
+          <Input placeholder="End time" onChange={handleChangeEndTime} value={endTime}/>
+          <Button onClick={setCurrentTimeEnd} size="small">Current Time</Button>
+        </TimePanel>
         <TimePanel><Button onClick={save}>Save</Button></TimePanel>
       </TimeRegion>
       <CloseButtonRegion>
