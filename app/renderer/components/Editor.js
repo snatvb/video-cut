@@ -94,4 +94,4 @@ const Editor = ({ filePath, onClose, onSave }) => {
   )
 }
 
-export default Editor
+export default React.memo(Editor)

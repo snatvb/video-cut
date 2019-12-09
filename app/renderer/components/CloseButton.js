@@ -25,4 +25,4 @@ const CloseButton = (props) => (
   <Container {...props}>×</Container>
 )
 
-export default CloseButton
+export default React.memo(CloseButton)

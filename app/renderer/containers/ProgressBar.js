@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled, { css } from 'styled-components'
 import { useSelector } from 'react-redux'
 
@@ -68,4 +68,4 @@ const ProgressBar = () => {
   )
 }
 
-export default ProgressBar
+export default React.memo(ProgressBar)

@@ -17,6 +17,8 @@ const Input = styled.input`
   }
 `
 
-export default function Component(props) {
+function Component(props) {
   return <Input type="text" {...props} />
 }
+
+export default React.memo(Component)
