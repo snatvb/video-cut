@@ -16,6 +16,20 @@ const getCssBySize = (size) => {
   }
 }
 
+export const ButtonTheme = {
+  Info: 'Info',
+  Danger: 'danger',
+}
+
+const themeCss = {
+  [ButtonTheme.Info]: css`
+    background-color: #00a1dd;
+  `,
+  [ButtonTheme.Danger]: css`
+    background-color: #dd1a00;
+  `,
+}
+
 const Button = styled.button`
   background-color: #393939;
   border: none;
@@ -27,6 +41,8 @@ const Button = styled.button`
   height: 32px;
 
   ${({ size }) => getCssBySize(size)}
+
+  ${({ theme }) => themeCss[theme] || ''}
 
   &:hover, &:focus {
     background-color: #494949;

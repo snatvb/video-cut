@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-
-import ProgressBar from './ProgressBar'
-import CloseButton from '../components/CloseButton'
 import * as actions from '../actions'
+import CloseButton from '../components/CloseButton'
+import ProgressBar from './ProgressBar'
+
 
 const Container = styled.div`
   width: 100%;

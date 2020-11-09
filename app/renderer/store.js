@@ -1,17 +1,19 @@
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
-import { connectRouter, routerMiddleware, push } from 'connected-react-router'
-import thunk from 'redux-thunk'
+import { connectRouter, push, routerMiddleware } from 'connected-react-router'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import persistState from 'redux-localstorage'
 import createSagaMiddleware from 'redux-saga'
-
-import middlewares from './middlewares'
-import * as sagas from './sagas'
-import user from './reducers/user'
-import userActions from './actions/user'
-import file from './reducers/file'
+import thunk from 'redux-thunk'
 import fileActions from './actions/file'
-import progress from './reducers/progress'
 import progressActions from './actions/progress'
+import userActions from './actions/user'
+import middlewares from './middlewares'
+import file from './reducers/file'
+import progress from './reducers/progress'
+import user from './reducers/user'
+import videoSettings from './reducers/videoSettings'
+import watermark from './reducers/watermark'
+import * as sagas from './sagas'
+
 
 export default function configureStore(initialState, routerHistory) {
   const router = routerMiddleware(routerHistory)
@@ -25,6 +27,8 @@ export default function configureStore(initialState, routerHistory) {
 
   const reducers = {
     router: connectRouter(routerHistory),
+    videoSettings,
+    watermark,
     progress,
     user,
     file,
@@ -41,7 +45,10 @@ export default function configureStore(initialState, routerHistory) {
     return compose
   })()
 
-  const enhancer = composeEnhancers(applyMiddleware(...middlewaresToApply), persistState())
+  const enhancer = composeEnhancers(applyMiddleware(...middlewaresToApply), persistState(
+    Object.keys(reducers)
+      .filter((path) => path !== 'progress')
+  ))
   const rootReducer = combineReducers(reducers)
   const store = createStore(rootReducer, initialState, enhancer)
   sagaMiddleware.run(sagas.initialize)

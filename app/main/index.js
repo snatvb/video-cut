@@ -1,8 +1,8 @@
-import path from 'path'
-import { app, crashReporter, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, crashReporter, Menu } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
-
+import path from 'path'
 import api from './api'
+
 
 ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffmpeg.exe'))
 ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffprobe.exe'))
@@ -16,7 +16,7 @@ let forceQuit = false
 crashReporter.start({
   productName: 'YourName',
   companyName: 'YourCompany',
-  submitURL: 'https://your-domain.com/url-to-submit',
+  submitURL: 'https://your-domain.f.f.f.com/url-to-submit',
   uploadToServer: false,
 })
 

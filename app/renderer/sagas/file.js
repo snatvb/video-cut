@@ -1,8 +1,8 @@
-import { take, all, call, select, put } from 'redux-saga/effects'
 import { ipcRenderer } from 'electron'
-
-import * as selectors from '../selectors'
+import { all, call, put, select, take } from 'redux-saga/effects'
 import * as actions from '../actions'
+import * as selectors from '../selectors'
+
 
 function* save() {
   while (true) {
@@ -12,10 +12,15 @@ function* save() {
 
     yield put(actions.progress.setInProgress(true))
     const filePath = yield select(selectors.file.getPath)
+    const watermark = yield select(selectors.watermark.get)
+    const videoSettings = yield select(selectors.videoSettings.get)
     const time = action.payload
     ipcRenderer.send('video.cut', {
       time,
       filePath,
+      watermark,
+      audio: videoSettings.audio,
+      bitrate: videoSettings.bitrate,
     })
   }
 }

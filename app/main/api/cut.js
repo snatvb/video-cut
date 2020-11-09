@@ -1,7 +1,7 @@
-import path from 'path'
-import { dialog } from 'electron'
-import { ipcMain } from 'electron'
+import { dialog, ipcMain } from 'electron'
 import ffmpeg from 'fluent-ffmpeg'
+import path from 'path'
+import { Position } from '../../shared/constants/watermark'
 
 async function getPathToSave(filePath) {
   const originalExt = path.extname(filePath)
@@ -16,12 +16,20 @@ async function getPathToSave(filePath) {
     filePath: path.normalize(pathToSave.filePath),
     cancelled: false,
   } : {
-    filePath: path.normalize(`${pathToSave.filePath}${originalExt}`),
-    cancelled: false,
-  }
+      filePath: path.normalize(`${pathToSave.filePath}${originalExt}`),
+      cancelled: false,
+    }
 }
 
-async function cut(event, { filePath, time }) {
+const defaultWatermarkPosition = 'main_w-overlay_w-30:main_h-overlay_h-20'
+const watermarkPositions = {
+  [Position.TopLeft]: '30:20',
+  [Position.TopRight]: 'main_w-overlay_w-30:20',
+  [Position.BottomLeft]: '30:main_h-overlay_h-20',
+  [Position.BottomRight]: defaultWatermarkPosition,
+}
+
+async function cut(event, { filePath, time, watermark, audio }) {
   console.log('Start cut', { filePath, time })
   const pathToSave = await getPathToSave(filePath)
   console.log('Path to save', pathToSave)
@@ -31,25 +39,40 @@ async function cut(event, { filePath, time }) {
     return
   }
 
-  ffmpeg(filePath)
-  .setStartTime(time.start)
-  .duration(time.end)
-  .on('end', function(error) {
-    if(!error) {
-      console.log('Save success')
-      event.sender.send('video.progress.success', { success: true })
-    } else {
+  const video = ffmpeg(filePath)
+    .videoCodec('libx264')
+    .setStartTime(time.start)
+    .duration(time.end - time.start)
+    .videoBitrate('2000')
+    .on('end', function (error) {
+      if (!error) {
+        console.log('Save success')
+        event.sender.send('video.progress.success', { success: true })
+      } else {
+        event.sender.send('video.progress.error', { error })
+      }
+    })
+    .on('error', function (error) {
+      console.log('Error: ', error)
       event.sender.send('video.progress.error', { error })
-    }
-  })
-  .on('error', function(error) {
-    console.log('Error: ', error)
-    event.sender.send('video.progress.error', { error })
-  })
-  .on('progress', function(progress) {
-    event.sender.send('video.progress', { percent: progress.percent })
-  })
-  .save(path.normalize(pathToSave.filePath))
+    })
+    .on('progress', function (progress) {
+      event.sender.send('video.progress', { percent: progress.percent })
+    })
+
+  if (!audio.enabled) {
+    video.noAudio()
+  }
+
+  if (watermark.filePath) {
+    video
+      .input(path.normalize(watermark.filePath))
+      .complexFilter([
+        `overlay=${watermarkPositions[watermark.position] || defaultWatermarkPosition}`
+      ])
+  }
+
+  video.save(path.normalize(pathToSave.filePath))
 }
 
 function registerListeners() {

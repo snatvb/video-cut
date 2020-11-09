@@ -21,3 +21,7 @@ body {
     user-select: none;
     cursor: default;
 }
+
+.fa-interactive {
+  cursor: pointer !important;
+}
