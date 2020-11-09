@@ -14,6 +14,7 @@ files:
   - build/
   - node_modules/
   - assets/
+  - ffmpeg.bin/${platform}/**/*
 
 dmg:
   contents:
@@ -26,15 +27,11 @@ dmg:
       y: 150
 
 mac:
-  target: zip
+  target: dmg
   category: video.editor.tools
-  files:
-   - '!assets/win/'
 
 win:
   target: nsis
-  files:
-   - '!assets/mac/'
 
 linux:
   target:
