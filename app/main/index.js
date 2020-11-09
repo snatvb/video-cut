@@ -3,10 +3,19 @@ import ffmpeg from 'fluent-ffmpeg'
 import path from 'path'
 import api from './api'
 
+if (process.platform === 'win32') {
+  ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/win/ffmpeg.exe'))
+  ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/win/ffprobe.exe'))
+  ffmpeg.setFlvtoolPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/win/ffplay.exe'))
+}
 
-ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffmpeg.exe'))
-ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffprobe.exe'))
-ffmpeg.setFlvtoolPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/ffplay.exe'))
+if (process.platform === 'darwin') {
+  ffmpeg.setFfmpegPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/mac/ffmpeg'))
+  ffmpeg.setFfprobePath(path.resolve(__dirname, '../../assets/ffmpeg.bin/mac/ffprobe'))
+  ffmpeg.setFlvtoolPath(path.resolve(__dirname, '../../assets/ffmpeg.bin/mac/ffplay'))
+}
+
+console.log(process.platform)
 
 const isDevelopment = process.env.NODE_ENV === 'development'
 

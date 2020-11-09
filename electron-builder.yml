@@ -26,11 +26,15 @@ dmg:
       y: 150
 
 mac:
-  target: dmg
-  category: video.cut.tools
+  target: zip
+  category: video.editor.tools
+  files:
+   - '!assets/win/'
 
 win:
   target: nsis
+  files:
+   - '!assets/mac/'
 
 linux:
   target:
