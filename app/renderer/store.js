@@ -7,11 +7,7 @@ import fileActions from './actions/file'
 import progressActions from './actions/progress'
 import userActions from './actions/user'
 import middlewares from './middlewares'
-import file from './reducers/file'
-import progress from './reducers/progress'
-import user from './reducers/user'
-import videoSettings from './reducers/videoSettings'
-import watermark from './reducers/watermark'
+import appReducers from './reducers'
 import * as sagas from './sagas'
 
 
@@ -27,11 +23,7 @@ export default function configureStore(initialState, routerHistory) {
 
   const reducers = {
     router: connectRouter(routerHistory),
-    videoSettings,
-    watermark,
-    progress,
-    user,
-    file,
+    ...appReducers,
   }
 
   const sagaMiddleware = createSagaMiddleware()
@@ -47,7 +39,7 @@ export default function configureStore(initialState, routerHistory) {
 
   const enhancer = composeEnhancers(applyMiddleware(...middlewaresToApply), persistState(
     Object.keys(reducers)
-      .filter((path) => path !== 'progress')
+      .filter((path) => path !== 'progress' && path !== 'timeline')
   ))
   const rootReducer = combineReducers(reducers)
   const store = createStore(rootReducer, initialState, enhancer)

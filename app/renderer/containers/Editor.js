@@ -10,6 +10,7 @@ import * as actions from '../actions'
 import Button, { ButtonTheme } from '../components/Button'
 import Input from '../components/Input'
 import WaterMark from '../components/Watermark'
+import Timeline from './Timeline'
 import * as helpers from '../helpers'
 import * as selectors from '../selectors'
 
@@ -143,6 +144,7 @@ const Editor = ({ filePath, onClose, onSave }) => {
             )}
         </InputPanel>
       </TimeRegion>
+      <Timeline />
       <WaterMark onUpdate={updateWatermark} onClear={dropWatermark} data={watermark} />
       <ButtonsRegion>
         <Button onClick={close} theme={ButtonTheme.Danger}>
