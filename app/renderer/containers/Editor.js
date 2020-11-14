@@ -97,19 +97,13 @@ const Editor = ({ filePath, onClose, onSave }) => {
     }
   }, [])
 
-  const save = useCallback(() => {
-    // const start = Maybe.of(parseInt(startTime, 10))
-    //   .filter(helpers.notIsNaN)
-    //   .filter((time) => time < videoRef.current.duration - 1)
-    //   .getOrElse(0)
-    // const end = Maybe.of(parseInt(endTime, 10))
-    //   .filter(helpers.notIsNaN)
-    //   .filter((time) => time > start)
-    //   .filter((time) => time < videoRef.current.duration)
-    //   .getOrElse(videoRef.current.duration)
+  const handleTimeUpdate = useCallback(() => {
+    dispatch(actions.timeline.setCurrentCursor((videoRef.current.currentTime / videoRef.current.duration ) * 100))
+  }, [])
 
+  const save = useCallback(() => {
     onSave(videoRef.current)
-  }, [startTime, endTime, onSave])
+  }, [onSave])
 
   const setCurrentTimeStart = useCallback(() => {
     setStartTime(Math.round(videoRef.current.currentTime))
@@ -121,7 +115,7 @@ const Editor = ({ filePath, onClose, onSave }) => {
 
   return (
     <Container>
-      <Video ref={videoRef} src={`file:///${filePath}`} controls />
+      <Video ref={videoRef} src={`file:///${filePath}`} onTimeUpdate={handleTimeUpdate} controls />
       <TimeRegion>
         <InputPanel>
           <Input placeholder="Bitrate (2000 by default)" onChange={handleChangeBitrate} value={videoSettings.bitrate || ''} />
@@ -138,8 +132,8 @@ const Editor = ({ filePath, onClose, onSave }) => {
           {videoSettings.audio.enabled ? (
             <Button onClick={disableSound}><FontAwesomeIcon icon={faVolumeUp} className="fa-interactive" /></Button>
           ) : (
-              <Button onClick={enableSound}><FontAwesomeIcon icon={faVolumeMute} className="fa-interactive" /></Button>
-            )}
+            <Button onClick={enableSound}><FontAwesomeIcon icon={faVolumeMute} className="fa-interactive" /></Button>
+          )}
         </InputPanel>
       </TimeRegion>
       <Timeline />
