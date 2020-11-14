@@ -1,13 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
+export const Type = {
+  Default: 'default',
+  CurrentTime: 'currentTime',
+}
+
 const Base = styled.div`
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
   width: 100%;
-  /* -webkit-app-region: no-drag; */
 `
 
 const Container = styled.div`
@@ -25,6 +29,10 @@ const Line = styled.div`
   top: 0;
   left: 0;
   background-color: #fff;
+
+  ${Base}.${Type.CurrentTime} & {
+    background-color: #abe0f4;
+  }
 `
 
 const Tenon = styled.div`
@@ -38,6 +46,10 @@ const Tenon = styled.div`
   -webkit-app-region: no-drag;
   cursor: pointer;
 
+  ${Base}.${Type.CurrentTime} & {
+    background: linear-gradient(0deg, rgba(0,161,221,1) 0%, rgba(0,212,255,1) 100%);
+  }
+
   &:active {
     cursor: grabbing;
   }
@@ -50,7 +62,7 @@ const calculateCursorPosition = (baseRef, event) => {
   return (x / baseBounds.width) * 100
 }
 
-const Cursor = ({ onDrag, position }) => {
+const Cursor = ({ onDrag, position, type = Type.Default }) => {
   const [isDrag, setIsDrag] = React.useState(false)
   const baseRef = React.useRef(null)
 
@@ -81,10 +93,10 @@ const Cursor = ({ onDrag, position }) => {
   const styles = { left: `${position.toFixed(2)}%` }
 
   return (
-    <Base ref={baseRef}>
+    <Base ref={baseRef} onClick={changeCursorPosition} className={type}>
       <Container style={styles}>
         <Line />
-        <Tenon onMouseDown={handleMouseDown} />
+        {onDrag && <Tenon onMouseDown={handleMouseDown} />}
       </Container>
     </Base>
   )

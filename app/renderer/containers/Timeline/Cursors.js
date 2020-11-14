@@ -3,10 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import * as selectors from '../../selectors'
 import * as actions from '../../actions'
-import Cursor from './Cursor'
+import Cursor, { Type } from './Cursor'
 
 const Cursors = () => {
   const dispatch = useDispatch()
+  const currentPosition = useSelector(selectors.timeline.getCurrentCursor)
   const startPosition = useSelector(selectors.timeline.getStartCursor).getOrElse(0)
   const endPosition = useSelector(selectors.timeline.getEndCursor).getOrElse(100)
 
@@ -22,10 +23,15 @@ const Cursors = () => {
     }
   }, [startPosition])
 
+  const handleDragCurrent = React.useCallback((event) => {
+    dispatch(actions.timeline.setCurrentCursor(event.position))
+  }, [])
+
   return (
     <>
       <Cursor position={startPosition} onDrag={handleDragStart} />
       <Cursor position={endPosition} onDrag={handleDragEnd} />
+      <Cursor position={currentPosition} onDrag={handleDragCurrent} type={Type.CurrentTime} />
     </>
   )
 }
