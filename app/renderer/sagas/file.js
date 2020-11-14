@@ -11,17 +11,35 @@ function* save() {
     if (inProgress) { continue }
 
     yield put(actions.progress.setInProgress(true))
-    const filePath = yield select(selectors.file.getPath)
-    const watermark = yield select(selectors.watermark.get)
-    const videoSettings = yield select(selectors.videoSettings.get)
-    const time = action.payload
-    ipcRenderer.send('video.cut', {
+    const [filePath, watermark, videoSettings, startCursor, endCursor] = yield all([
+      select(selectors.file.getPath),
+      select(selectors.watermark.get),
+      select(selectors.videoSettings.get),
+      select(selectors.timeline.getStartCursor),
+      select(selectors.timeline.getEndCursor),
+    ])
+    const { videoElement } = action.payload
+    const start = startCursor
+      .map((x) => (x / 100) * videoElement.duration)
+      .map(Math.floor)
+      .getOrElse(0)
+    const end = endCursor.map((x) => (x / 100) * videoElement.duration)
+      .map(Math.floor)
+      .getOrElse(videoElement.duration)
+    const time = {
+      start,
+      end,
+    }
+    const args = {
       time,
       filePath,
       watermark,
       audio: videoSettings.audio,
       bitrate: videoSettings.bitrate,
-    })
+    }
+
+    console.log('Отправка на рендер', args)
+    ipcRenderer.send('video.cut', args)
   }
 }
 

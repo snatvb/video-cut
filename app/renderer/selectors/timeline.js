@@ -1,2 +1,4 @@
+import { Maybe } from 'monad-maniac'
 
-export const getCursorPosition = (state) => state.timeline.cursorPosition
+export const getStartCursor = (state) => Maybe.of(state.timeline.startCursor)
+export const getEndCursor = (state) => Maybe.of(state.timeline.endCursor)

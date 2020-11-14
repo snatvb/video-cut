@@ -1,11 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Maybe } from 'monad-maniac'
-import { useSelector, useDispatch } from 'react-redux'
-
-import * as selectors from '../../selectors'
-import * as actions from '../../actions'
-import * as helpers from '../../helpers'
 
 const Base = styled.div`
   position: absolute;
@@ -13,7 +7,7 @@ const Base = styled.div`
   top: 0;
   height: 100%;
   width: 100%;
-  -webkit-app-region: no-drag;
+  /* -webkit-app-region: no-drag; */
 `
 
 const Container = styled.div`
@@ -35,7 +29,7 @@ const Line = styled.div`
 
 const Tenon = styled.div`
   position: absolute;
-  top: 0;
+  top: -16px;
   left: -8px;
   border-radius: 3px;
   background-color: #fff;
@@ -53,14 +47,12 @@ const calculateCursorPosition = (baseRef, event) => {
   const baseBounds = baseRef.current.getBoundingClientRect()
   const maxCursorPos = baseBounds.width
   const x = Math.min(maxCursorPos, Math.max(0, event.pageX - baseBounds.x))
-  return x
+  return (x / baseBounds.width) * 100
 }
 
-const Cursor = () => {
+const Cursor = ({ onDrag, position }) => {
   const [isDrag, setIsDrag] = React.useState(false)
   const baseRef = React.useRef(null)
-  const cursorPosition = useSelector(selectors.timeline.getCursorPosition)
-  const dispatch = useDispatch()
 
   const handleMouseDown = React.useCallback(() => {
     setIsDrag(true)
@@ -70,11 +62,10 @@ const Cursor = () => {
     setIsDrag(false)
   }, [])
 
-  const changeCursorPosition = React.useCallback((event) => {
-    dispatch(actions.timeline.setCursorPosition(
-      calculateCursorPosition(baseRef, event)
-    ))
-  }, [])
+  const changeCursorPosition = React.useCallback((mouseEvent) => {
+    const position = calculateCursorPosition(baseRef, mouseEvent)
+    onDrag({ position, mouseEvent })
+  }, [onDrag])
 
   React.useEffect(() => {
     if (isDrag) {
@@ -87,19 +78,10 @@ const Cursor = () => {
     }
   }, [isDrag, changeCursorPosition])
 
-  const styles = Maybe.of(baseRef.current)
-    .map(helpers.dom.getBoundingClientRect)
-    .map(({ width }) => (
-      (cursorPosition / width) * 100
-    ))
-    .map(helpers.clampPercent)
-    .map((percent) => ({
-      left: `${percent.toFixed(2)}%`,
-    }))
-    .getOrElse(undefined)
+  const styles = { left: `${position.toFixed(2)}%` }
 
   return (
-    <Base ref={baseRef} onClick={changeCursorPosition}>
+    <Base ref={baseRef}>
       <Container style={styles}>
         <Line />
         <Tenon onMouseDown={handleMouseDown} />

@@ -98,19 +98,17 @@ const Editor = ({ filePath, onClose, onSave }) => {
   }, [])
 
   const save = useCallback(() => {
-    const start = Maybe.of(parseInt(startTime, 10))
-      .filter(helpers.notIsNaN)
-      .filter((time) => time < videoRef.current.duration - 1)
-      .getOrElse(0)
-    const end = Maybe.of(parseInt(endTime, 10))
-      .filter(helpers.notIsNaN)
-      .filter((time) => time > start)
-      .filter((time) => time < videoRef.current.duration)
-      .getOrElse(videoRef.current.duration)
+    // const start = Maybe.of(parseInt(startTime, 10))
+    //   .filter(helpers.notIsNaN)
+    //   .filter((time) => time < videoRef.current.duration - 1)
+    //   .getOrElse(0)
+    // const end = Maybe.of(parseInt(endTime, 10))
+    //   .filter(helpers.notIsNaN)
+    //   .filter((time) => time > start)
+    //   .filter((time) => time < videoRef.current.duration)
+    //   .getOrElse(videoRef.current.duration)
 
-    console.log(start, end)
-
-    onSave(start, end)
+    onSave(videoRef.current)
   }, [startTime, endTime, onSave])
 
   const setCurrentTimeStart = useCallback(() => {

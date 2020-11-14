@@ -1,13 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Cursor from './Cursor'
+import Cursors from './Cursors'
+import Shadows from './Shadows'
 
 const Container = styled.div`
   position: relative;
   width: 90%;
-  height: 80px;
-  margin: 0 auto;
+  height: 40px;
+  margin: 20px auto;
+  background: linear-gradient(0deg, rgba(0,161,221,1) 0%, rgba(0,212,255,1) 100%);
 
   -webkit-app-region: no-drag;
 `
@@ -15,7 +17,8 @@ const Container = styled.div`
 const Timeline = () => {
   return (
     <Container>
-      <Cursor />
+      <Cursors />
+      <Shadows />
     </Container>
   )
 }
