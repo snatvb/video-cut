@@ -3,14 +3,15 @@ import { faArrowLeft, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Maybe } from 'monad-maniac'
 import * as R from 'ramda'
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
-import * as actions from '../actions'
 import Button, { ButtonTheme } from '../components/Button'
 import Input from '../components/Input'
 import WaterMark from '../components/Watermark'
 import Timeline from './Timeline'
+import useRafLoop from '../hooks/useRafLoop'
+import * as actions from '../actions'
 import * as helpers from '../helpers'
 import * as selectors from '../selectors'
 
@@ -62,6 +63,8 @@ const Editor = ({ filePath, onClose, onSave }) => {
 
   const watermark = useSelector(selectors.watermark.get)
   const videoSettings = useSelector(selectors.videoSettings.get)
+  const startCursor = useSelector(selectors.timeline.getStartCursor).getOrElse(undefined)
+  const endCursor = useSelector(selectors.timeline.getEndCursor).getOrElse(undefined)
 
   const [startTime, setStartTime] = useState('')
   const [endTime, setEndTime] = useState('')
@@ -97,9 +100,23 @@ const Editor = ({ filePath, onClose, onSave }) => {
     }
   }, [])
 
-  const handleTimeUpdate = useCallback(() => {
-    dispatch(actions.timeline.setCurrentCursor((videoRef.current.currentTime / videoRef.current.duration ) * 100))
+  const handleChangeTime = useCallback((event) => {
+    const video = videoRef.current
+    video.pause()
+    video.currentTime = video.duration * (event.position / 100)
+  }, [onSave])
+
+  useRafLoop(() => {
+    if (!videoRef.current.paused) {
+      dispatch(actions.timeline.setCurrentCursor(
+        (videoRef.current.currentTime / videoRef.current.duration ) * 100
+      ))
+    }
   }, [])
+
+  useEffect(() => {
+    videoRef.current.pause()
+  }, [startCursor, endCursor])
 
   const save = useCallback(() => {
     onSave(videoRef.current)
@@ -115,7 +132,7 @@ const Editor = ({ filePath, onClose, onSave }) => {
 
   return (
     <Container>
-      <Video ref={videoRef} src={`file:///${filePath}`} onTimeUpdate={handleTimeUpdate} controls />
+      <Video ref={videoRef} src={`file:///${filePath}`} controls />
       <TimeRegion>
         <InputPanel>
           <Input placeholder="Bitrate (2000 by default)" onChange={handleChangeBitrate} value={videoSettings.bitrate || ''} />
@@ -136,7 +153,7 @@ const Editor = ({ filePath, onClose, onSave }) => {
           )}
         </InputPanel>
       </TimeRegion>
-      <Timeline />
+      <Timeline onChangeTime={handleChangeTime} />
       <WaterMark onUpdate={updateWatermark} onClear={dropWatermark} data={watermark} />
       <ButtonsRegion>
         <Button onClick={close} theme={ButtonTheme.Danger}>

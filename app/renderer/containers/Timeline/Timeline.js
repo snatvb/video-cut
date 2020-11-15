@@ -14,10 +14,10 @@ const Container = styled.div`
   -webkit-app-region: no-drag;
 `
 
-const Timeline = () => {
+const Timeline = ({ onChangeTime }) => {
   return (
     <Container>
-      <Cursors />
+      <Cursors onChangeTime={onChangeTime} />
       <Shadows />
     </Container>
   )
