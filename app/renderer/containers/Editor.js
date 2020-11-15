@@ -58,6 +58,14 @@ const InputPanel = styled.div`
   }
 `
 
+const Label = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  line-height: 100%;
+`
+
 const Editor = ({ filePath, onClose, onSave }) => {
   const dispatch = useDispatch()
 
@@ -66,12 +74,8 @@ const Editor = ({ filePath, onClose, onSave }) => {
   const startCursor = useSelector(selectors.timeline.getStartCursor).getOrElse(undefined)
   const endCursor = useSelector(selectors.timeline.getEndCursor).getOrElse(undefined)
 
-  const [startTime, setStartTime] = useState('')
-  const [endTime, setEndTime] = useState('')
   const videoRef = useRef(null)
   const close = useCallback(() => onClose(), [onClose])
-  const handleChangeStartTime = useCallback((event) => setStartTime(event.target.value), [])
-  const handleChangeEndTime = useCallback((event) => setEndTime(event.target.value), [])
 
   const updateWatermark = React.useCallback((newWatermark) => {
     dispatch(actions.watermark.update(newWatermark))
@@ -122,28 +126,13 @@ const Editor = ({ filePath, onClose, onSave }) => {
     onSave(videoRef.current)
   }, [onSave])
 
-  const setCurrentTimeStart = useCallback(() => {
-    setStartTime(Math.round(videoRef.current.currentTime))
-  }, [videoRef])
-
-  const setCurrentTimeEnd = useCallback(() => {
-    setEndTime(Math.round(videoRef.current.currentTime))
-  }, [videoRef])
-
   return (
     <Container>
       <Video ref={videoRef} src={`file:///${filePath}`} controls />
       <TimeRegion>
         <InputPanel>
+          <Label>Bitrate:</Label>
           <Input placeholder="Bitrate (2000 by default)" onChange={handleChangeBitrate} value={videoSettings.bitrate || ''} />
-        </InputPanel>
-        <InputPanel>
-          <Input placeholder="Start time" onChange={handleChangeStartTime} value={startTime} />
-          <Button onClick={setCurrentTimeStart} size="small">Current Time</Button>
-        </InputPanel>
-        <InputPanel>
-          <Input placeholder="End time" onChange={handleChangeEndTime} value={endTime} />
-          <Button onClick={setCurrentTimeEnd} size="small">Current Time</Button>
         </InputPanel>
         <InputPanel>
           {videoSettings.audio.enabled ? (
