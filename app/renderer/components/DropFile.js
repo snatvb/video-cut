@@ -5,7 +5,11 @@ import { useDropzone } from 'react-dropzone'
 import styled, { css } from 'styled-components'
 
 const Container = styled.div`
-  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  height: 100vh;
   width: 100%;
   box-sizing: border-box;
   color: #fff;
@@ -17,7 +21,7 @@ const DisplayArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 50%;
   box-sizing: border-box;
   margin: 0 20px;
   font-size: 24px;

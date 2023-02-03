@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import * as actions from '../actions'
-import DropFile from '../components//DropFile'
+import DropFile from '../components/DropFile'
 import * as selectors from '../selectors'
 import Editor from './Editor'
 

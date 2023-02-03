@@ -6,7 +6,6 @@ import { createMemoryHistory } from 'history';
 import routes from './routes';
 import configureStore from './store';
 import { ToastContainer } from 'react-toastify';
-import { MainWrapper } from './components/MainWrapper';
 
 const syncHistoryWithStore = (store, history) => {
   const { router } = store.getState();
@@ -24,7 +23,7 @@ const rootElement = document.querySelector(document.currentScript.getAttribute('
 
 ReactDOM.render(
   <Provider store={store}>
-    <MainWrapper><ConnectedRouter history={routerHistory}>{routes}</ConnectedRouter></MainWrapper>
+    <ConnectedRouter history={routerHistory}>{routes}</ConnectedRouter>
     <ToastContainer />
   </Provider>,
   rootElement,

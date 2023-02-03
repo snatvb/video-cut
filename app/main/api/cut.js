@@ -64,6 +64,7 @@ async function cut(event, { filePath, time, watermark, audio, bitrate }) {
     })
 
   if (['number' || 'string'].includes(typeof bitrate) && String(bitrate).length > 0) {
+    console.log('Set bitrate', bitrate)
     video.videoBitrate(bitrate)
   }
 

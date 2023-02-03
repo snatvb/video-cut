@@ -7,8 +7,9 @@ import ProgressBar from './ProgressBar'
 
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
+  background-color: #151718;
+  min-height: 100vh;
+  border-radius: 10px;
 `
 
 const Application = ({ children }) => {
