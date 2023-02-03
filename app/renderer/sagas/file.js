@@ -38,6 +38,7 @@ function* save() {
       bitrate: videoSettings.bitrate,
     }
 
+    yield put(actions.progress.setPercents(0.1))
     console.log('Отправка на рендер', args)
     ipcRenderer.send('video.cut', args)
   }

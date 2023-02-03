@@ -67,6 +67,7 @@ const Bar = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 40px;
 `
 
 const ProgressBar = () => {

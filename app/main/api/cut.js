@@ -3,6 +3,8 @@ import ffmpeg from 'fluent-ffmpeg'
 import path from 'path'
 import { Position } from '../../shared/constants/watermark'
 
+const storage = new Map()
+
 async function getPathToSave(filePath) {
   const originalExt = path.extname(filePath)
   const pathToSave = await dialog.showSaveDialog({ defaultPath: path.dirname(filePath) })
@@ -29,7 +31,8 @@ const watermarkPositions = {
   [Position.BottomRight]: defaultWatermarkPosition,
 }
 
-async function cut(event, { filePath, time, watermark, audio }) {
+async function cut(event, { filePath, time, watermark, audio, bitrate }) {
+
   console.log('Start cut', { filePath, time })
   const pathToSave = await getPathToSave(filePath)
   console.log('Path to save', pathToSave)
@@ -43,8 +46,8 @@ async function cut(event, { filePath, time, watermark, audio }) {
     .videoCodec('libx264')
     .setStartTime(time.start)
     .duration(time.end - time.start)
-    .videoBitrate('2000')
     .on('end', function (error) {
+      storage.delete(filePath)
       if (!error) {
         console.log('Save success')
         event.sender.send('video.progress.success', { success: true })
@@ -60,6 +63,10 @@ async function cut(event, { filePath, time, watermark, audio }) {
       event.sender.send('video.progress', { percent: progress.percent })
     })
 
+  if (['number' || 'string'].includes(typeof bitrate) && String(bitrate).length > 0) {
+    video.videoBitrate(bitrate)
+  }
+
   if (!audio.enabled) {
     video.noAudio()
   }
@@ -72,11 +79,20 @@ async function cut(event, { filePath, time, watermark, audio }) {
       ])
   }
 
+  storage.set(filePath, video)
   video.save(path.normalize(pathToSave.filePath))
+}
+
+function kill(event, { filePath }) {
+  const video = storage.get(filePath)
+  if (video) {
+    video.kill()
+  }
 }
 
 function registerListeners() {
   ipcMain.on('video.cut', cut)
+  ipcMain.on('video.kill', kill)
 }
 
 export function initialize() {

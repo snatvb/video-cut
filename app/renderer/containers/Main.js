@@ -28,7 +28,7 @@ const Main = () => {
   }, [])
 
   const saveVideo = useCallback((videoElement) => {
-    console.debug('Сохранение видео', {
+    console.debug('saving...', {
       filePath,
       videoElement,
     })

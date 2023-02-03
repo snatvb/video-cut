@@ -13,8 +13,8 @@ const Container = styled.div`
   height: 30px;
   width: 30px;
   display: flex;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
 
   &:hover, &:focus {
     color: rgb(240, 240, 240);

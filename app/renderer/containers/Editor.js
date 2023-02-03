@@ -3,7 +3,7 @@ import { faArrowLeft, faVolumeMute, faVolumeUp } from '@fortawesome/free-solid-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Maybe } from 'monad-maniac'
 import * as R from 'ramda'
-import React, { useCallback, useRef, useState, useEffect } from 'react'
+import React, { useCallback, useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components'
 import Button, { ButtonTheme } from '../components/Button'
@@ -22,6 +22,7 @@ const Container = styled.div`
   align-content: center;
   flex-wrap: wrap;
   height: 100%;
+  padding: 40px 20px;
 `
 
 const Video = styled.video`
@@ -29,6 +30,7 @@ const Video = styled.video`
   max-height: 60%;
   max-width: 100%;
   outline: none;
+  border-radius: 10px;
 `
 
 const ButtonsRegion = styled.div`

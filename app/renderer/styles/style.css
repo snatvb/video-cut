@@ -1,7 +1,7 @@
 
 html, body, #app {
-  width: 100%;
-  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #app {
@@ -9,7 +9,6 @@ html, body, #app {
 }
 
 body {
-  background-color: #151718;
   color: rgb(230, 230, 230);
   font-family: Arial, serif;
 }
