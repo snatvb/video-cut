@@ -1,6 +1,6 @@
 {
   "name": "easy-video-editor",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "simple video editor",
   "main": "init.js",
   "author": {
