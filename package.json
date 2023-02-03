@@ -47,7 +47,7 @@
     "electron": "^11.5.0",
     "electron-builder": "^22.9.1",
     "electron-devtools-installer": "^2.2.4",
-    "electron-mocha": "^8.1.2",
+    "electron-mocha": "^11.0.2",
     "eslint": "^6.4.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-react": "^7.14.3",
